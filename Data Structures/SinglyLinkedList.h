@@ -28,7 +28,6 @@ public:
 };
 
 
-
 template<typename d>
 class sLinkedList
 {
