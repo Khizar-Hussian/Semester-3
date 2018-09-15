@@ -5,6 +5,7 @@ using namespace std;
 
 void main()
 {
+	//test main
 	sLinkedList<int> list;
 	list.InsertAtStart(8);
 	list.InsertAtStart(4);
