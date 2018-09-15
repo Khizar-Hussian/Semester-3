@@ -44,28 +44,33 @@ class dLinkedList
 public:
 	dLinkedList()
 	{
-		head.data = NULL;
-		head.next = nullptr;
-		head.prev = nullptr;
 		tail = new node<d>();
+		tail->prev = &head;
+		head.data = NULL;
+		head.next = tail;
+		head.prev = nullptr;
 	}
 
 	~dLinkedList()
 	{
-		node<d>* temp = head.next;
-		while (temp != tail)
+		node<d>* temp;
+		temp = head.next;					//head -> 1   2   3  4  5 ->tail
+		while (head.next!=tail)
 		{
-			head->next = temp->next;
+			head.next = temp->next;
 			delete temp;
+			temp = head.next;
 		}
 
 	}
 	void printList()
 	{
-		if (head.next != empty) {
+		if (head.next != tail) {
 			node<d> *curr = head.next;
-			while (curr != tail)
-				cout << curr.data << " ";
+			while (curr != tail) {
+				cout << curr->data << " ";
+				curr = curr->next;
+			}
 			cout << endl;
 		}
 	}
@@ -86,5 +91,77 @@ public:
 		head.next = temp->next;
 		temp->next->prev = temp->prev;
 		delete temp;
+	}
+
+	void Remove(d data)
+	{
+		node<d>* curr = head.next;
+		while (curr != nullptr && curr->data < data)
+			curr = curr->next;
+		if (curr != nullptr && curr->data == data)
+		{
+			curr->prev->next = curr->next;
+			curr->next->prev = curr->prev;
+			delete curr;
+		}
+	}
+
+	void Remove(node<d>* node)
+	{
+		node->prev->next = node->next;
+		node->next->prev = node->prev;
+		delete node;
+	}
+
+
+	void InsertEnd(d data)
+	{
+		node<d>* temp = new node<d>(data);
+		if (head.next == tail)
+		{
+			temp->next = head.next;
+			head.next = temp;
+		}
+		else
+		{
+			temp->next = tail;
+			temp->prev = tail->prev;
+			tail->prev->next = temp;
+			tail->prev = temp;
+		}
+	}
+
+	void RemoveEnd()
+	{
+		if (head.next != tail)
+		{
+			node<d>* temp = tail->prev;
+			temp->prev->next = temp->next;
+			temp->next->prev = temp->prev;
+			delete temp;
+		}
+	}
+
+	void insertSorted(d data)
+	{
+		node<d>* temp = new node<d>(data);
+		if (head.next == tail)
+		{
+			temp->next = head.next;
+			tail->prev = temp;
+			head.next = temp;
+			temp->prev = &head;
+		}
+		else 
+		{
+			node<d>* curr = head.next;
+			while (curr != tail && curr->data < data)
+				curr = curr->next;
+
+			curr->prev->next = temp;
+			temp->prev = curr->prev;
+			temp->next = curr;
+			curr->prev = temp;
+		}
 	}
 };

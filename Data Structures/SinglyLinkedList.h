@@ -138,4 +138,15 @@ public:
 			delete curr;
 		}
 	}
+
+	void Remove(node<d>* p)
+	{
+		if (p->next != nullptr)
+		{
+			p.data = p->next->data;
+			node<d> *n = p->next->next;
+			delete p->next;
+			p->next = n;
+		}
+	}
 };
